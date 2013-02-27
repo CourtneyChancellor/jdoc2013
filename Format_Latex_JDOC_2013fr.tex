@@ -1,0 +1,176 @@
+\documentclass[fr]{JDoc}
+\usepackage{color}                                                       % gestion des couleurs
+\usepackage[colorlinks=true,urlcolor=blue]{hyperref}                     % gestion des liens hypertextes avec couleur
+
+\begin{document}
+
+\ed{PRES LUNAM \\ Ecole Doctorale STIM \\ Sciences et Technologies de l'Information
+et Mathématiques} \spec{Spécialité\hyperlink{nh}{\textcolor{red}{\footnotemark[1]}}}
+\addtocounter{footnote}{1}
+
+\labo{Nom} \equipe{\'Equipe}
+
+\title{INFORMATION ET FORMAT DES ARTICLES JDOC 2013}
+
+\author{Nom, Prénom de l'auteur}
+
+\email{prenoms.nom@labo-ville.fr}
+
+\makehead   %construit l'entête (ed, spécialité, labo, titre, auteurs, ...).
+
+\footnotetext[1]{\hypertarget{nh}{Les spécialités sont :
+Automatique, Robotique, Traitement du Signal ;
+Mathématiques ;
+Informatique ;
+Systèmes \'Electroniques et de Télécommunications, Génie \'Electrique ;
+et Systèmes de Production.}}
+
+
+\begin{abstract}
+Le présent paragraphe fixe les contraintes dans la rédaction des résumés destinés à la Journée des Doctorants 2013. Il vous permet d'avoir un appui visuel du style imposé. \textbf{En plus de votre article, vous êtes invités à écrire un résumé de vos travaux de recherche (800 caractères minimum, 1500 caractères maximum, soit de l'ordre de 8 à 15 lignes) pour la construction du Livret des Résumés}, qui regroupera les résumés de tous les travaux présentés à la Journée des Doctorants 2013. Son contenu doit être le plus abordable possible. Le Comité d'Organisation de la JDOC 2013 vous remercie de bien prendre en compte les contraintes de longueur, et de joindre votre résumé à votre article au moment de sa soumission, voir date sur le site web.
+\end{abstract}
+
+\begin{keywords}
+Doivent être en italique, JDOC 2013, format, taille, mise en page,
+dates.
+\end{keywords}
+
+\begin{collaborations}
+Organismes de recherche académique, partenaires industriels,
+programmes de travail.
+\end{collaborations}
+
+\nocite{Maxwell, Mautz}
+\renewcommand{\baselinestretch}{1.2}
+
+\section{JDOC 2013}
+Les articles soumis aux JDOC 2013 seront lus par les membres du comité d'organisation.  Le choix des présentations orales lors de la journée JDOC 2013 dépendra de vos souhaits et de l'avis du comité d'organisation au regard de ces dits articles.  De plus amples informations vous seront très prochainement communiquées en ce sens.  Tous les articles seront inclus dans les actes de la conférence qui seront remis lors de la journée.  L'objectif de ces articles est de permettre aux doctorants d'élargir leurs connaissances sur ce qui se fait dans les autres disciplines de l'Ecole Doctorale STIM.  Son contenu doit donc présenter votre travail en restant le plus abordable possible. 
+
+\subsection{Informations techniques}
+L'article doit être formaté sur une colonne et contenu en quatre pages  maximum (figures, tableaux et références compris). Il doit être rédigé en français ou en anglais (attention aux fautes d'orthographe!), format A4. L'article comprendra un résumé (15 lignes maximum), mots clés, corps du travail, conclusion ainsi que quelques références.  Il faut mentionner l'école doctorale d'appartenance, la formation doctorale, le nom du laboratoire et le nom de l'auteur.
+
+
+\section{Mise en page \LaTeX{}}
+Pour les utilisateurs de \LaTeX{}, veuillez utiliser le fichier {\bf
+JDoc.cls} qui se chargera de la mise en page de votre article au
+format de la JDoc. Aucune autre configuration n'est requise. De
+nouvelles balises y ont été définies afin de simplifier la mise en
+page de l'article. Ce fichier définit une nouvelle classe de document
+\LaTeXe{} qui sera chargée automatiquement.
+
+\subsection{Nom du fichier}
+ 
+ L'article doit \^etre nommé de la manière suivante : \textit{\textbf{nom\_laboratoire\_papier.pdf}}\\
+ avec\\
+ nom : nom de l'auteur.\\
+ lobratoire : sigle de laboratoire.\\
+ Exemple : \textit{\textbf{DUPONT\_IRCCyN\_papier.pdf}}
+
+\subsection{Comment charger la classe JDoc ? }
+\begin{itemize}
+    \item Copier le fichier {\bf JDoc.cls} dans le même répertoire que votre
+    fichier {\bf .tex}.
+    \item Charger la classe \verb|JDoc| comme suit :
+\begin{verbatim}
+
+                            \documentclass[options]{JDoc}
+                            \begin{document}
+                               ...
+                            \end{document}
+
+\end{verbatim}
+Le paramètre optionnel \verb|"options"| peut prendre les valeurs
+optionnelles courantes (\verb|"a4paper"|, \verb|"10pt"|, ...). Selon
+la langue de l'article (anglais ou français), il faudra rajouter
+\verb|"en"| ou \verb|"fr"| en option. Par exemple :\\
+
+\verb|                  \documentclass[en]{JDoc}| $\Longrightarrow$
+\framebox{{\small {\bf Abstract:} bla bla .., {\bf Keywords:} bla bla ..}}\\
+
+\verb|                  \documentclass[fr]{JDoc}| $\Longrightarrow$
+\framebox{{\small {\bf Résumé :} bla bla .., {\bf Mots clés : } bla bla ..}} \\
+
+{\bf NB. 1 :} Par défaut, tous les articles seront considérés comme
+étant en français. Les articles seront toujours forcés en A4, une
+colonne, 10pt, recto-verso. Mettre par exemple
+\verb|"twocolumn|,\verb| oneside"| dans \verb|"options"| n'aura aucun
+effet. Pour avoir du 'deux colonnes', il est plutôt conseillé
+d'utiliser l'environnement
+\verb|\begin{multicols}{2}...end{multicols}| disponible dans le
+package \verb|"multicols"| et qui permet de générer du 'deux
+colonnes'. L'avantage de multicols est qu'on peut avoir du 'deux
+colonnes' local, équilibré et sans le saut de page automatique.\\
+
+{\bf NB. 2 :} Le \textbf{unsrt.bst} se charge de la mise en forme de
+la biliographie. Il est en principe disponible par défaut dans les
+packages de MiKTeX. Vous devez le copier dans le repertoire de votre
+fichier .tex si vous ne l'avez pas. Pour ceux qui ne veulent pas
+utiliser ce style, libre à vous de composer votre bibliographie avec
+\verb|bibitem|. Cependant, il faudra faire attention à respecter le
+format.
+
+\end{itemize}
+
+\subsection{Les balises supplémentaires de la classe JDoc }
+Les balises de mise en page seront :
+\begin{verbatim}
+            \ed{..}                              % nom de l'école doctorale
+            \spec{..}                            % spécialité
+            \labo{..}                            % laboratoire
+            \equipe{..}                          % équipe dans le labo
+            \title{..}                           % titre de l'article
+            \author{..}                          % nom de l'auteur
+            \email{..}                           % email de l'auteur
+
+            \makehead                            % construit l'entête (ed, spec,
+                                                   labo, auteur, directeur, ...
+            \begin{abstract}...\end{abstract}
+            \begin{keywords}...\end{keywords}
+\end{verbatim}
+
+\subsection{Packages chargés par défaut}
+Le packages suivants sont chargés par défaut :
+\begin{verbatim}
+            \usepackage{amsmath,amsfonts}           % packages pour les maths
+            \usepackage{mathrsfs,amssymb}           % packages pour les maths
+            \usepackage[latin1]{inputenc}           % caractères spéciaux (é,â,..)
+            \usepackage[T1]{fontenc}                % caractères spéciaux (é,â,..)
+            \usepackage{graphicx}                   % gestion des des graphiques
+            \usepackage{multicol}                   % gestion des multi-colonnes
+            \usepackage{color}                      % gestion des couleurs
+            \usepackage[french]{babel}              % si on ecrit en français
+            \usepackage[english]{babel}             % ou si on ecrit en anglais
+\end{verbatim}
+Pour toute documentation sur \LaTeXe{}, se référer à
+\cite{Oet06}.
+\section{Détail des rubriques}
+Le résumé sera identique à celui de ce document, pas plus de \underline{\bf 15
+lignes}.\\
+
+Mots clés en italiques.\\
+
+Corps du travail: N'oubliez pas que ce travail va être lu par des
+doctorants des différents départements, il doit donc être le plus
+simple possible, sans perdre son caractêre scientifique.  L'insertion
+des graphiques doit se faire avec modération!\\
+
+Les citations seront classées par ordre d'apparition dans l'article.
+Elles seront numérotées de la forme suivante
+\cite{Oet06}\cite{Mau84}\cite{max82}, etc....
+
+\section{Conclusion}
+Nous n'accepterons plus
+aucun article au delà de la date de soumission.  Pour toute difficulté
+concernant ce délai, veuillez nous contacter.
+
+\bibliography{biblio}
+
+%Ou utiliser bibitem
+%\begin{thebibliography}{3}
+%   \bibitem[1]{Mau84} J.R. MAUTZ and R.F. HARRINGTON, "An E-Field solution for a conducting surface small or comparable to the wavelength", IEEE Trans.  AP, vol.  32, pp.  330-339, 1984.
+%   \bibitem[2]{max82} J.CLERCK MAXWELL, Atreatise on Electricity and Magnetism, 3rd ed., vol.  2. Oxford : Clarendon, 1982.
+%   \bibitem[3]{Oet06} TOBIAS OETIKER {\it et al.}, "Une courte introduction à \LaTeXe{}", disponible à l'adresse
+   %\emph{\href{http://www.ctan.org/tex-archive/info/lshort/french/flshort-3.20.pdf}{http://www.ctan.org/tex-archive/info/lshort/french/flshort-3.20.pdf}}.
+%\end{thebibliography}
+
+\end{document}
