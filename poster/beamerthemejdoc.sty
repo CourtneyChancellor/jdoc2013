@@ -1,0 +1,185 @@
+% ----------------------------------------------------------------
+% beamerthemejdoc --- Beamerposter theme for JDOC posters
+% E-mail: julien.tanguy@jhome.fr
+% Released under the LaTeX Project Public License v1.3c or later
+% See http://www.latex-project.org/lppl.txt
+% ---------------------------------------------------------------- 
+
+\newif\if@ed      \@edfalse
+\newif\if@spec    \@specfalse
+\newif\if@labo    \@labofalse
+\newif\if@equipe  \@equipefalse
+
+\newif\if@title   \@titlefalse
+\newif\if@author  \@authorfalse
+\newif\if@email   \@emailfalse
+
+\newif\if@dir     \@dirfalse
+\newif\if@codir   \@codirfalse
+\newif\if@enc     \@encfalse
+
+\newif\if@photo   \@photofalse
+
+%Balise 'ed' (Ecole Doctorale)
+\def\ed {
+    \@edtrue
+    \def\@ed
+}
+%Balise 'spec' (spécialité)
+\def\spec {
+    \@spectrue
+    \def\@spec
+}
+%Balise 'labo' (nom du labo)
+\def\labo {
+    \@labotrue
+    \def\@labo
+}
+%Balise 'equipe' (nom de l'équipe)
+\def\equipe {
+    \@equipetrue
+    \def\@equipe
+}
+%Balise 'EMAIL'
+\def\email {
+    \@emailtrue
+    \def\@email
+}
+%Balises 'DIRECTEUR'
+\def\directeur {
+    \@dirtrue
+    \def\@directeur
+}
+%Balises 'CO-DIRECTEUR'
+\def\codirecteur {
+    \@codirtrue
+    \def\@codirecteur
+}
+%Balise 'ENCADRANT'
+\def\encadrant {
+    \@enctrue
+    \def\@encadrant
+}
+%Balise 'PHOTO'
+\def\photo {
+    \@phototrue
+    \def\@photo
+}
+
+\setbeamertemplate{headline}{%
+    \leavevmode
+
+    \begin{beamercolorbox}[wd=\paperwidth]{headline}
+        \begin{columns}[T]
+            \begin{column}{.02\paperwidth}
+
+            \end{column}
+            \begin{column}{.2\paperwidth}
+                \vskip4ex
+                \raggedright
+                \usebeamercolor{title in headline}
+                \color{fg}
+                \footnotesize{PRES LUNAM}\\[1ex]
+                \footnotesize{\'Ecole Doctorale STIM}\\[1ex]
+                \footnotesize{Sciences et Technologies de}\\[1ex]
+                \footnotesize{l’Information et Math\'ematique}\\[1ex]
+            \end{column}
+            \begin{column}{.55\paperwidth}
+                \vskip4ex
+                \begin{center}
+                    \if@photo
+                    \includegraphics[height=7\baselineskip]{\@photo}
+                    \else
+                    PHOTO ???
+                    \fi
+                \end{center}
+            \end{column}
+            \begin{column}{.2\paperwidth}
+                \vskip4ex
+                \raggedright
+                \usebeamercolor{title in headline}
+                \color{fg}
+                \footnotesize{\textbf{Sp\'ecialit\'e:} \if@spec \@spec \else ??? \fi}\\[1ex]
+                \footnotesize{\textbf{Laboratoire:} \if@labo \@labo \else ???\fi}\\[1ex]
+                \footnotesize{\textbf{\'Equipe:} \if@equipe \@equipe \else ???\fi}\\[1ex]
+                \vskip2ex
+            \end{column}
+            \begin{column}{.02\paperwidth}
+            \end{column}
+        \end{columns}
+        \vskip2ex
+    \end{beamercolorbox}
+
+    \begin{beamercolorbox}[wd=\paperwidth]{lower separation line head}
+        \begin{center}
+            \usebeamercolor{title in headline}{\color{fg}\textbf{\Large{\inserttitle}}\\[1ex]}
+        \end{center}
+        \begin{columns}[T]
+            \begin{column}[c]{.25\paperwidth}
+                \usebeamercolor{author in headline}
+                \color{fg}
+                \begin{raggedright}%
+                    \if@dir%
+                    \normalsize{\textbf{Directeur~: }\@directeur}\\[1ex]
+                    \fi
+                    \if@codir
+                    \normalsize{\textbf{Codirecteur~: }\@codirecteur}\\[1ex]
+                    \fi
+                \end{raggedright}
+            \end{column}
+            \begin{column}[c]{.40\paperwidth}
+                \begin{center}
+                    \usebeamercolor{author in headline}
+                    \color{fg}
+                    \normalsize{\insertauthor}\\[1ex]
+                    \normalsize{\if@email \@email \else ???\fi}\\[1ex]
+                    \vskip1ex
+                \end{center}
+            \end{column}
+            \begin{column}[c]{.25\paperwidth}
+                \usebeamercolor{author in headline}
+                \color{fg}
+                \begin{raggedright}%
+                    \if@enc%
+                    \normalsize{\textbf{Encadrant~: }\@encadrant}\\[1ex]
+                    \fi
+                \end{raggedright}
+            \end{column}
+        \end{columns}
+        \rule{\textwidth}{1pt}
+    \end{beamercolorbox}
+}
+
+\setbeamertemplate{block begin}{
+    \vskip.75ex
+    \begin{beamercolorbox}[ht=4.7ex,dp=0.2ex,left,colsep*=.75ex]{block title}%
+        \usebeamerfont*{block title}%
+        {\phantom{Ig}\hspace*{-.7em}\insertblocktitle}% phantom because of baseline problem
+    \end{beamercolorbox}%
+    {\ifbeamercolorempty[bg]{block body}{}{\nointerlineskip\vskip-0.5pt}}%
+    \usebeamerfont{block body}%
+    \begin{beamercolorbox}[leftskip=1em,colsep*=.75ex,sep=0.5ex,vmode]{block body}%
+        \ifbeamercolorempty[bg]{block body}{\vskip-.25ex}{\vskip-.75ex}\vbox{}%
+    }
+    \setbeamertemplate{block end}{
+    \end{beamercolorbox}
+}
+\setbeamerfont{block title}{size=\large}
+% equal font sizes for all levels
+\setbeamerfont{itemize/enumerate body}{size=\normalsize}
+\setbeamerfont{itemize/enumerate subbody}{size=\normalsize}
+\setbeamerfont{itemize/enumerate subsubbody}{size=\normalsize}
+
+% Copyright (C) 2013 by Julien Tanguy <julien.tanguy@jhome.fr>
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License (LPPL), either
+% version 1.3c of this license or (at your option) any later
+% version.  The latest version of this license is in the file:
+%
+% http://www.latex-project.org/lppl.txt
+%
+% This work is "maintained" (as per LPPL maintenance status) by
+% Julien Tanguy.
+%
+% This work consists of the file beamerthemejdoc.sty.

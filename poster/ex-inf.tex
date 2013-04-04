@@ -1,0 +1,254 @@
+\documentclass[fleqn,8pt,t]{beamer}
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+%\usepackage{french} % Sommaire en début de document
+%\usepackage[top=2cm, bottom=2cm, left=2cm, right=2cm]{geometry} % Marges
+
+\usepackage{amsmath} % Maths
+\usepackage{amsfonts} % Maths
+\usepackage{amssymb} % Maths
+\usepackage{stmaryrd} % Maths (crochets doubles)
+
+%\usepackage{listings} % Mise en forme du code (pour Hoare) ## À REVOIR ###
+%\usepackage{ifthen} % Structures If Then Else
+\usepackage{theorem} % Styles supplémentaires pour théorèmes
+\usepackage{url}
+\usepackage{array}  % Tableaux évolués
+\usepackage{multirow}  % Pour des colonnes sur plusieurs lignes
+
+%\usepackage{enumerate} % Changer les puces des listes d'énumération
+%\usepackage{setspace} % Changer les interlignes
+
+%\usepackage{subfig} % Créer des sous-figures
+%\usepackage{graphicx} % Importer des images
+
+\usepackage{ulem}  % Pour l'attribut barré
+
+\usepackage{comment}
+
+% Police
+\usepackage{lmodern}
+%\usepackage{libertine}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{tikz}
+\newdimen\pgfex
+\newdimen\pgfem
+\usetikzlibrary{arrows,shapes,shadows,scopes}
+\usetikzlibrary{positioning}
+\usetikzlibrary{matrix}
+\usetikzlibrary{decorations.text}
+\usetikzlibrary{decorations.pathmorphing}
+
+\input{macros-ph}
+
+\tikzstyle{sort}=[fill=lightgray, rounded corners, draw=black]
+\tikzstyle{process}=[circle,draw,minimum size=15pt,font=\footnotesize,inner sep=1pt]
+\tikzstyle{black process}=[process, draw=blue, fill=red,text=black,font=\bfseries]
+\tikzstyle{highlighted process}=[current process, fill=gray]
+\tikzstyle{process box}=[fill=none,draw=black,rounded corners]
+\tikzstyle{current process}=[process,fill=blue]
+\tikzstyle{tick label}=[font=\footnotesize]
+\tikzstyle{tick}=[densely dotted]
+\tikzstyle{hit}=[->,>=angle 45]
+\tikzstyle{selfhit}=[min distance=30pt,curve to]
+\tikzstyle{bounce}=[densely dotted,>=stealth',->]
+\tikzstyle{hlhit}=[very thick]
+\tikzstyle{ulhit}=[draw=lightgray,fill=lightgray]
+\tikzstyle{pulhit}=[fill=lightgray]
+\tikzstyle{bulhit}=[draw=lightgray]
+
+\tikzstyle{hitless graph}=[every edge/.style={draw=red,-}]
+
+\tikzstyle{aS}=[every edge/.style={draw,->}]
+\tikzstyle{Asol}=[draw,circle,minimum size=5pt,inner sep=0]
+\tikzstyle{Aproc}=[draw]
+\tikzstyle{Aobj}=[]
+
+\renewcommand{\TState}[2]{
+  \foreach \proc in {#2} {
+        \only<#1>{ \node[current process] (\proc) at (\proc.center) {}; }
+  };
+}
+
+%\definecolor{darkred}{rgb}{0.5,0,0}
+\definecolor{lightred}{rgb}{1,0.8,0.8}
+\definecolor{lightgreen}{rgb}{0.7,1,0.7}
+\definecolor{darkgreen}{rgb}{0,0.5,0}
+\definecolor{darkblue}{rgb}{0,0,0.5}
+\definecolor{darkyellow}{rgb}{0.5,0.5,0}
+\definecolor{lightyellow}{rgb}{1,1,0.6}
+\definecolor{darkcyan}{rgb}{0,0.6,0.6}
+\definecolor{darkorange}{rgb}{0.8,0.2,0}
+
+\definecolor{notsodarkgreen}{rgb}{0,0.7,0}
+
+%\definecolor{coloract}{rgb}{0,1,0}
+%\definecolor{colorinh}{rgb}{1,0,0}
+\colorlet{coloract}{darkgreen}
+\colorlet{colorinh}{red}
+\colorlet{coloractgray}{lightgreen}
+\colorlet{colorinhgray}{lightred}
+\colorlet{colorinf}{darkgray}
+\colorlet{coloractgray}{lightgreen}
+\colorlet{colorinhgray}{lightred}
+
+\colorlet{colorgray}{lightgray}
+
+
+\tikzstyle{grn}=[every node/.style={circle,draw=black,outer sep=2pt,minimum
+                size=15pt,text=black}, node distance=1.5cm]
+\tikzstyle{inh}=[>=|,-|,draw=colorinh,thick, text=black,label]
+\tikzstyle{act}=[->,>=triangle 60,draw=coloract,thick,color=coloract]
+\tikzstyle{inhgray}=[>=|,-|,draw=colorinhgray,thick, text=black,label]
+\tikzstyle{actgray}=[->,>=triangle 60,draw=coloractgray,thick,color=coloractgray]
+\tikzstyle{inf}=[->,draw=colorinf,thick,color=colorinf]
+%\tikzstyle{elabel}=[fill=none, above=-1pt, sloped,text=black, minimum size=10pt, outer sep=0, font=\scriptsize,draw=none]
+\tikzstyle{elabel}=[fill=none,text=black, above=-2pt,%sloped,
+minimum size=10pt, outer sep=0, font=\scriptsize, draw=none]
+%\tikzstyle{elabel}=[]
+
+
+\tikzstyle{plot}=[every path/.style={-}]
+\tikzstyle{axe}=[gray,->,>=stealth']
+\tikzstyle{ticks}=[font=\scriptsize,every node/.style={gray}]
+\tikzstyle{mean}=[thick]
+\tikzstyle{interval}=[line width=5pt,red,draw opacity=0.7]
+\definecolor{lightred}{rgb}{1,0.3,0.3}
+
+\tikzstyle{hl}=[yellow]
+\tikzstyle{hl2}=[orange]
+
+\tikzstyle{every matrix}=[ampersand replacement=\&]
+\tikzstyle{shorthandoff}=[]
+\tikzstyle{shorthandon}=[]
+%%%%%%%%%%%%%%
+\setbeamertemplate{navigation symbols}{}
+
+
+
+\begin{document}
+\begin{frame}[plain,c]
+
+
+
+\vspace*{0.3cm}
+
+\begin{centering}
+~~~
+\scalebox{0.6}{
+\begin{tikzpicture}
+  \path[use as bounding box] (-0.5,0) rectangle (6.5,5);
+  \path[draw,rounded corners] (-1.5,-1) rectangle (7.5,5);
+  
+    %%% Exemple pour l'inférence %%%
+% Sortes
+\TSort{(0,3)}{a}{2}{l}
+\TSort{(0,0)}{b}{2}{l}
+\TSort{(6,0)}{z}{3}{r}
+
+% Sorte coopérative et arcs
+\TSetTick{ab}{0}{00}
+\TSetTick{ab}{1}{01}
+\TSetTick{ab}{2}{10}
+\TSetTick{ab}{3}{11}
+\TSort{(3,0)}{ab}{4}{l}
+
+% Actions de màj grisées
+\THit{a_1}{}{ab_0}{.west}{ab_2}
+\THit{a_1}{}{ab_1}{.west}{ab_3}
+\path[bounce,bend left] \TBounce{ab_0}{}{ab_2}{.south} \TBounce{ab_1}{}{ab_3}{.south};
+
+\THit{a_0}{}{ab_2}{.west}{ab_0}
+\THit{a_0}{}{ab_3}{.west}{ab_1}
+\path[bounce,bend right] \TBounce{ab_2}{}{ab_0}{.north} \TBounce{ab_3}{}{ab_1}{.north};
+
+\THit{b_0}{}{ab_3}{.west}{ab_2}
+\THit{b_0}{}{ab_1}{.west}{ab_0}
+\THit{b_1}{}{ab_0}{.west}{ab_1}
+\THit{b_1}{}{ab_2}{.west}{ab_3}
+\path[bounce,bend right] \TBounce{ab_1}{}{ab_0}{.north} \TBounce{ab_3}{}{ab_2}{.north};
+\path[bounce,bend left] \TBounce{ab_0}{}{ab_1}{.south} \TBounce{ab_2}{}{ab_3}{.south};
+
+% Arcs sortant de la sc
+\THit{ab_2}{}{z_1}{.north west}{z_2}
+\THit{ab_2}{}{z_0}{.west}{z_1}
+\path[bounce,bend left] \TBounce{z_1}{}{z_2}{.south} \TBounce{z_0}{}{z_1}{.south};
+
+\THit{ab_3}{}{z_2}{.west}{z_1}
+\THit{ab_3}{}{z_0}{.west}{z_1}
+\THit{ab_1}{}{z_2}{.west}{z_1}
+\THit{ab_1}{}{z_0}{.west}{z_1}
+\path[bounce,bend left] \TBounce{z_2}{,bend right}{z_1}{.north};
+
+\THit{ab_0}{}{z_2}{.west}{z_1}
+\THit{ab_0}{}{z_1}{.south west}{z_0}
+\path[bounce,bend right] \TBounce{z_2}{}{z_1}{.north} \TBounce{z_1}{}{z_0}{.north};
+
+\end{tikzpicture}
+}
+
+
+
+\vspace*{.7cm}
+~~~
+%%% Flèches
+%\begin{center}
+\begin{tikzpicture}
+  %\path[draw,use as bounding box] (0,-0.25) rectangle (0,0.25);
+  \path[draw] (-0.3, 0.5) edge[<-,draw,very thick] (-0.3, 2.5);
+  \path[draw] (-0.7, 0.5) edge[->,draw,very thick,dashed] (-0.7, 2.5);
+\end{tikzpicture}
+%\end{center}
+
+
+
+\vspace*{.7cm}
+
+\begin{columns}
+  \begin{column}{0.5\textwidth}
+  \begin{flushright}
+  \vspace*{-2cm}
+    \begin{tikzpicture}[grn]
+      \path[use as bounding box] (0,-1) rectangle (2,1.5);
+      \path[draw,rounded corners] (-0.6,-0.7) rectangle (5.7,2.2);
+      \path[draw] (2.6,-.2) rectangle (2.6,1.7);
+      % Gènes
+      \node[inner sep=0] (a) at (0,1.5) {a};
+      \node[inner sep=0] (b) at (0,0) {b};
+      \node[inner sep=0] (z) at (2,0.75) {z};
+      % Arcs
+      \path (a) edge[act] node[elabel,above=-2pt] {$1+$} (z);
+      \path (b) edge[inh] node[elabel,below=-2pt] {$1-$} (z);
+    \end{tikzpicture}
+  \end{flushright}
+  \end{column}
+  \begin{column}{0.5\textwidth}
+  ~~
+    \begin{tabular}[b]{c|c|c}
+      \multicolumn{2}{c|}{$\omega$} & \multirow{2}{*}{$k_{z, \omega}$} \\
+    \cline{1-2}
+      $a$ & $b$ & \\
+    \hline
+      $-$ & $+$ & $1$ \\
+      $-$ & $-$ & $0$ \\
+      $+$ & $+$ & $2$ \\
+      $+$ & $-$ & $1$
+    \end{tabular}
+  \end{column}
+\end{columns}
+
+
+
+
+\end{centering}
+
+
+
+\end{frame}
+
+\end{document}
+

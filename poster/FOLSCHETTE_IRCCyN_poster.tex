@@ -1,0 +1,150 @@
+\documentclass[final,t]{beamer} % beamer 3.10: do NOT use option hyperref={pdfpagelabels=false} !
+%\documentclass[final,hyperref={pdfpagelabels=false}]{beamer} % beamer 3.07: get rid of beamer warnings
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsthm, amssymb, latexsym}
+%\usefonttheme[onlymath]{serif}
+
+\useinnertheme[shadow]{rounded}
+\usecolortheme{rose}
+\usetheme{jdoc}
+\setbeamertemplate{navigation symbols}{}
+
+\boldmath
+\usepackage[orientation=portrait,size=a1,scale=1.4]{beamerposter}                  % e.g. for DIN-A1 poster, with optional grid and debug output
+%\usepackage[orientation=portrait,size=a0,scale=1.0,printer=rwth-glossy-uv.df]{beamerposter}   % e.g. for DIN-A0 poster with rwth-glossy-uv printer check
+\usepackage{tikz}
+\usetikzlibrary[decorations.pathmorphing]
+\include{macros-ph}
+
+
+
+\spec{Informatique}
+\labo{IRCCyN}
+\equipe{MeForBio}
+
+\title{Presentation of the Process Hitting framework and inference\\of Biological Regulatory Networks with Thomas parameters}
+\author{Folschette Maxime}
+\photo{Maxime.jpg}
+\directeur{Olivier Roux}
+\encadrant{Morgan Magnin}
+\email{Maxime.Folschette@irccyn.ec-nantes.fr}
+
+\newenvironment{myblock}[1]%
+{\section{#1}\begin{block}{\thesection. #1}}%
+{\end{block}}
+
+\newlength{\columnheight}
+\setlength{\columnheight}{150cm}
+
+
+
+\usepackage{color}
+\newcommand{\todo}[1]{\textbf{\textcolor{red}{[[#1]]}}}
+
+
+
+\begin{document}
+\begin{frame}{} 
+\begin{columns}[T]
+\begin{column}[b]{0.48\textwidth}
+\parbox[t][\columnheight]{\textwidth}{% must be some better way to set the the height, width and textwidth simultaneously
+
+% Colonne 1
+
+\begin{myblock}{Introduction}
+  \begin{itemize}
+    \item Systems biology = studying and understanding of interactions inside biological systems
+    \begin{itemize}
+      \item cells, organisms…
+      \item proteins/genes regulations
+    \end{itemize}
+    \item Biological systems are very complex
+    \item They may over-approximate the desired behavior
+  \end{itemize}
+  \todo{image}
+\end{myblock}
+
+\begin{myblock}{Studying models}
+  \begin{itemize}
+    \item Models are often too large to be studied
+    \item Usual model-checkers have to compute all states
+  \end{itemize}
+  %\todo{dessin model-checker}
+  \begin{figure}
+    \definecolor{darkred}{rgb}{0.5,0,0}
+    \definecolor{darkgreen}{rgb}{0,0.5,0}
+    \definecolor{darkblue}{rgb}{0,0,0.5}
+    \tikzstyle{bigedge}=[->, shorten <=10pt, shorten >=10pt, line width=.2cm]
+    \tikzstyle{warn}=[rounded corners, draw=darkred, line width=.07em, align=center, text=red]
+  \begin{tikzpicture}[line width=.05em]
+    \node[ellipse, draw=darkgreen, decoration={coil}, decorate, align=center] (system) {Biological\\system};
+    \node[rounded corners, draw=darkblue, right of=system, node distance=10cm, below=0.5cm] (model) {Model};
+    \node[rounded corners, draw=gray, below of=model, node distance=10cm] (properties) {Properties};
+    
+    \path[transparent, bend right] (model) edge node[right] (e) {} (properties);
+    \node[left of=e, left=.5cm, warn] (out)
+      {Computation time = $\infty$\\Memory size = $\infty$};
+    \path[warn] (out) edge (e);
+    \path[bigedge, bend left] (system) edge (model);
+    \path[bigedge, bend right] (model) edge (properties);
+  \end{tikzpicture}
+  \end{figure}
+\end{myblock}
+
+\begin{myblock}{The Process Hitting framework}
+  \begin{itemize}
+    \item Recent framework well-adapted to large-scale models
+    \item Atomistic representation of actions
+    \item Very efficient reachability approximations (ms)
+    \item Can handle models with hundreds of components
+  \end{itemize}
+  \todo{dessin PH + approx}
+\end{myblock}
+
+}
+\end{column}
+\begin{column}{0.48\textwidth}
+\parbox[t][\columnheight]{\textwidth}{ % must be some better way to set the the height, width and textwidth simultaneously
+
+% Colonne 2
+\vspace*{.52cm}
+
+\begin{myblock}{Translating PH models to Thomas modeling}
+  \begin{itemize}
+    \item More widespread representation of models after atomistic refining and study in PH
+    \item PH = atomistic actions between processes
+    \item Thomas = global actions between components
+    \item Method: exhaustive search of interactions
+  \end{itemize}
+  \begin{centering}
+  \begin{figure}
+    \includegraphics[scale=2.5,trim=2.5cm 0cm 2.1cm 0cm,clip=true]{ex-inf.pdf}
+  \end{figure}
+  \end{centering}
+\end{myblock}
+
+\begin{myblock}{Efficiently study Thomas models (?)}
+  \todo{?}
+\end{myblock}
+
+\begin{myblock}{Conclusion}
+  \begin{itemize}
+    \item Formal translation PH $\rightarrow$ Thomas
+    \item Implemented into the Pint library
+    \item Efficient results on big models (20 \& 40 genes)
+  \end{itemize}
+  \todo{Table résultats}
+\end{myblock}
+
+}
+\end{column}
+\end{columns}
+
+%\parbox[t][\columnheight]{\textwidth}{ % must be some better way to set the the height, width and textwidth simultaneously
+\vspace*{-100cm}
+xyzezfzefezfez xyzezfzefezfez xyzezfzefezfez xyzezfzefezfez 
+%}
+
+\end{frame}
+\end{document}

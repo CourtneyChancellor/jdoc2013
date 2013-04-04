@@ -11,3 +11,6 @@ main.pdf
 *~
 *.pag
 *.thm
+*.nav
+*.pdf
+*.snm
