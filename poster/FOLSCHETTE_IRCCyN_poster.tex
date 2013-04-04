@@ -3,19 +3,38 @@
 \usepackage[english]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath,amsthm, amssymb, latexsym}
+\usepackage{wasysym}
 %\usefonttheme[onlymath]{serif}
 
-\useinnertheme[shadow]{rounded}
+\useinnertheme{circles}
 \usecolortheme{rose}
 \usetheme{jdoc}
 \setbeamertemplate{navigation symbols}{}
 
-\boldmath
+%\boldmath
 \usepackage[orientation=portrait,size=a1,scale=1.4]{beamerposter}                  % e.g. for DIN-A1 poster, with optional grid and debug output
 %\usepackage[orientation=portrait,size=a0,scale=1.0,printer=rwth-glossy-uv.df]{beamerposter}   % e.g. for DIN-A0 poster with rwth-glossy-uv printer check
 \usepackage{tikz}
 \usetikzlibrary[decorations.pathmorphing]
 \include{macros-ph}
+
+\definecolor{darkred}{rgb}{0.5,0,0}
+\definecolor{darkgreen}{rgb}{0,0.5,0}
+\definecolor{darkblue}{rgb}{0,0,0.5}
+\definecolor{notsodarkred}{rgb}{0.75,0,0}
+\definecolor{notsodarkgreen}{rgb}{0,0.75,0}
+\tikzstyle{bigedge}=[->, shorten <=10pt, shorten >=10pt, line width=3mm]
+\tikzstyle{tinyedge}=[bigedge, shorten <=0pt, shorten >=7pt, line width=.8mm]
+\tikzstyle{smalleredge}=[bigedge, line width=2.2mm]
+\tikzstyle{warn}=[rounded corners, draw=red, line width=.07em, align=center, text=darkred]
+\tikzstyle{nice}=[rounded corners, draw=green, line width=.07em, align=center, text=darkgreen]
+
+%\newcommand{\warn}{\textcolor{red}{$\bigstar$}~}
+%\newcommand{\nice}{\textcolor{green}{$\bigstar$}~}
+\newcommand{\warn}{\textcolor{notsodarkred}{$\LARGE\frownie$}~}
+\newcommand{\nice}{\textcolor{darkgreen}{$\smiley$}~}
+
+\newcommand{\tval}[1]{\textbf{#1}}
 
 
 
@@ -25,7 +44,7 @@
 
 \title{Presentation of the Process Hitting framework and inference\\of Biological Regulatory Networks with Thomas parameters}
 \author{Folschette Maxime}
-\photo{Maxime.jpg}
+\photo{Moi-extrait.jpg}
 \directeur{Olivier Roux}
 \encadrant{Morgan Magnin}
 \email{Maxime.Folschette@irccyn.ec-nantes.fr}
@@ -33,9 +52,17 @@
 \newenvironment{myblock}[1]%
 {\section{#1}\begin{block}{\thesection. #1}}%
 {\end{block}}
+\newenvironment{warnblock}[1]%
+{\section{#1}\begin{alertblock}{\thesection. #1}}%
+{\end{alertblock}}
+\newenvironment{niceblock}[1]%
+{\section{#1}\begin{exampleblock}{\thesection. #1}}%
+{\end{exampleblock}}
 
 \newlength{\columnheight}
-\setlength{\columnheight}{150cm}
+\setlength{\columnheight}{64cm}
+\newlength{\adjust}
+\setlength{\adjust}{.52cm}
 
 
 
@@ -45,7 +72,8 @@
 
 
 \begin{document}
-\begin{frame}{} 
+\begin{frame}
+\vspace*{-.7cm}
 \begin{columns}[T]
 \begin{column}[b]{0.48\textwidth}
 \parbox[t][\columnheight]{\textwidth}{% must be some better way to set the the height, width and textwidth simultaneously
@@ -54,97 +82,172 @@
 
 \begin{myblock}{Introduction}
   \begin{itemize}
-    \item Systems biology = studying and understanding of interactions inside biological systems
+    \item \tval{Systems biology} = studying and understanding of interactions inside biological systems
     \begin{itemize}
-      \item cells, organisms…
-      \item proteins/genes regulations
+      \item A gene produces a protein
+      \item Many proteins activate/inhibit other genes
     \end{itemize}
-    \item Biological systems are very complex
-    \item They may over-approximate the desired behavior
+    \smallskip
+    \item Biological systems are \tval{very complex},\\and studying them is time/CPU expensive
+    %\item They may over-approximate the desired behavior
   \end{itemize}
-  \todo{image}
+  %\todo{image}
 \end{myblock}
+\vfill
 
-\begin{myblock}{Studying models}
+\begin{warnblock}{Studying models}
   \begin{itemize}
-    \item Models are often too large to be studied
+    \item Models are often \tval{too large to be studied}
+    \smallskip
     \item Usual model-checkers have to compute all states
   \end{itemize}
   %\todo{dessin model-checker}
   \begin{figure}
-    \definecolor{darkred}{rgb}{0.5,0,0}
-    \definecolor{darkgreen}{rgb}{0,0.5,0}
-    \definecolor{darkblue}{rgb}{0,0,0.5}
-    \tikzstyle{bigedge}=[->, shorten <=10pt, shorten >=10pt, line width=.2cm]
-    \tikzstyle{warn}=[rounded corners, draw=darkred, line width=.07em, align=center, text=red]
   \begin{tikzpicture}[line width=.05em]
     \node[ellipse, draw=darkgreen, decoration={coil}, decorate, align=center] (system) {Biological\\system};
-    \node[rounded corners, draw=darkblue, right of=system, node distance=10cm, below=0.5cm] (model) {Model};
-    \node[rounded corners, draw=gray, below of=model, node distance=10cm] (properties) {Properties};
+    \node[rounded corners, draw=blue, right of=system, node distance=12cm] (model) {Model};
+    \node[rounded corners, draw=blue, below of=model, node distance=10cm] (stategraph) {State graph};
+    \node[rounded corners, draw=gray, left of=stategraph, node distance=12cm] (properties) {\warn Properties};
     
-    \path[transparent, bend right] (model) edge node[right] (e) {} (properties);
-    \node[left of=e, left=.5cm, warn] (out)
-      {Computation time = $\infty$\\Memory size = $\infty$};
-    \path[warn] (out) edge (e);
+    \path[bigedge, transparent] (model) edge node[inner sep=0pt] (e) {} (stategraph);
+    \node[left of=e, left=.5cm, warn] (out) {Computation time = $\infty$\\Memory size = $\infty$};
+    \path[warn, shorten >=-5pt] (out) edge (e);
+    
     \path[bigedge, bend left] (system) edge (model);
-    \path[bigedge, bend right] (model) edge (properties);
+    \path[bigedge, -, shorten >=0pt] (model) edge (e);
+    \path[bigedge, draw=notsodarkred, shorten <=-10pt] (e) edge (stategraph);
+    \path[bigedge, bend right, draw=notsodarkred] (stategraph) edge (properties);
+    \node[circle, draw=red, fill=black, minimum size=5.5mm, inner sep=0pt] at (e) (ee) {};
   \end{tikzpicture}
   \end{figure}
-\end{myblock}
+\end{warnblock}
+\vfill
 
-\begin{myblock}{The Process Hitting framework}
+\begin{niceblock}{The Process Hitting framework}
+  \begin{center}
+    \tval{Process Hitting} (PH)
+  \end{center}
   \begin{itemize}
-    \item Recent framework well-adapted to large-scale models
+    \item Recent framework well adapted to large-scale models
+    \smallskip
     \item Atomistic representation of actions
-    \item Very efficient reachability approximations (ms)
-    \item Can handle models with hundreds of components
+    \smallskip
+    \item Very efficient \tval{reachability approximations} [1]
+    \smallskip
+    \item Handles models with hundreds of components in $<1$s
   \end{itemize}
-  \todo{dessin PH + approx}
-\end{myblock}
+  %\todo{dessin PH + approx}
+  \begin{figure}
+  \begin{tikzpicture}[line width=.05em]
+    \node[ellipse, draw=darkgreen, decoration={coil}, decorate, align=center] (system) {Biological\\system};
+    \node[rounded corners, draw=blue, right of=system, node distance=12cm] (model) {PH model};
+    \node[rounded corners, draw=gray, left of=stategraph, node distance=12cm] (properties) {\nice Properties};
+    \node[rounded corners, draw=red, right of=properties, node distance=10cm, align=left, font=\footnotesize] (inconc)
+      {\warn Inconclusive\\\phantom{\warn}cases};
+    
+    \path[transparent] (model) edge node[right, inner sep=0pt] (e) {} (properties);
+    \node[left of=e, left=3cm, left=.5cm, nice] (approx) {Approximation\\of the behavior};
+    \path[nice] (approx) edge (e);
+    \path[tinyedge, draw=notsodarkred] (e) edge (inconc);
+    
+    \path[bigedge, bend left] (system) edge (model);
+    \path[bigedge, -, shorten >=0pt] (model) edge (e);
+    \path[smalleredge, shorten <=0pt, draw=darkgreen] (e) edge (properties);
+    \node[circle, draw=green, fill=black, minimum size=5.5mm, inner sep=0pt] at (e) (ee) {};
+  \end{tikzpicture}
+  \end{figure}
+\end{niceblock}
 
 }
 \end{column}
 \begin{column}{0.48\textwidth}
+\addtolength{\columnheight}{\adjust}
 \parbox[t][\columnheight]{\textwidth}{ % must be some better way to set the the height, width and textwidth simultaneously
 
 % Colonne 2
-\vspace*{.52cm}
+\vspace*{\adjust}
 
-\begin{myblock}{Translating PH models to Thomas modeling}
+\begin{niceblock}{Translating PH models to BRN}
+  \begin{center}
+    \tval{Biological Regulatory Network} (BRN)
+  \end{center}
   \begin{itemize}
-    \item More widespread representation of models after atomistic refining and study in PH
-    \item PH = atomistic actions between processes
-    \item Thomas = global actions between components
-    \item Method: exhaustive search of interactions
+    \item \tval{Widespread} representation for biological models [2]
+    \begin{itemize}
+      %\item PH = precise atomistic actions
+      %\item BRN = global \& intuitive interactions
+      \item Interaction Graph (IG) = interactions between genes
+      \item Parameters = evolution of each gene
+    \end{itemize}
+    \smallskip
+    \item Method: \tval{exhaustive search} of interactions [3]
   \end{itemize}
   \begin{centering}
   \begin{figure}
-    \includegraphics[scale=2.5,trim=2.5cm 0cm 2.1cm 0cm,clip=true]{ex-inf.pdf}
+    \includegraphics[scale=2.3,trim=2.5cm 0cm 2.1cm 0cm,clip=true]{ex-inf.pdf}
   \end{figure}
   \end{centering}
-\end{myblock}
+\end{niceblock}
+\vfill
 
-\begin{myblock}{Efficiently study Thomas models (?)}
-  \todo{?}
+\begin{myblock}{Work in progress}
+  \begin{center}
+    PH are not \tval{strictly equivalent} to BRN yet
+  \end{center}
+  \begin{itemize}
+    \item Add priorities between actions into PH
+    \smallskip
+    \item Find a class of models equivalent to BRNs
+    \smallskip
+    \item Adapt the \tval{reachability approximations}
+  \end{itemize}
 \end{myblock}
+\vfill
 
 \begin{myblock}{Conclusion}
   \begin{itemize}
-    \item Formal translation PH $\rightarrow$ Thomas
+    \item Formal translation PH $\rightarrow$ BRN
+    \smallskip
     \item Implemented into the Pint library
-    \item Efficient results on big models (20 \& 40 genes)
+    \smallskip
+    \item Efficient results on big models (up to 40 genes)
   \end{itemize}
-  \todo{Table résultats}
+  %\todo{Table résultats}
+  \bigskip
+  \small
+  \begin{tabular}{r||c|c||c|c||c|c|}
+  \multicolumn{3}{c||}{Model specifications} & \multicolumn{2}{c||}{IG inference} & \multicolumn{2}{c|}{Parameters inference}\\
+  \hline
+    System & Genes & Actions & $\Delta t$ & Edges & $\Delta t$ & Parameters\\
+  \hline
+    \textbf{\textbf{egfr}} & \textbf{20} & 399 & \textbf{1s} & 50 & \textbf{1s} & 191\\
+  \hline
+    \textbf{\textbf{tcrsig}} & \textbf{40} & 301 & \textbf{1s} & 54 & \textbf{1s} & 143\\
+  \hline
+    \textbf{\textbf{tcrsig}} & \textbf{94} & 1124 & \textbf{13s} & 169 & $\infty$ & $0 / 2.10^9$\\
+  \hline
+    \textbf{\textbf{egfr}} & \textbf{104} & 2356 & \textbf{4min} & 241 & \textbf{1min 30s} & $1.10^6 / 2.10^6$\\
+  \hline
+  \end{tabular}
 \end{myblock}
 
 }
 \end{column}
 \end{columns}
 
-%\parbox[t][\columnheight]{\textwidth}{ % must be some better way to set the the height, width and textwidth simultaneously
-\vspace*{-100cm}
-xyzezfzefezfez xyzezfzefezfez xyzezfzefezfez xyzezfzefezfez 
-%}
+\vspace*{2cm}
+%\todo{Références}
+%[1] Paulevé, Magnin, Roux in \textit{Mathematical Structures in Computer Science}, 2012
+
+%[2] Bernot, Cassez, Comet, Delaplace, Müller, Roux in \textit{Electronic Notes in Theoretical Computer Science}, 2007
+
+%[3] Folschette, Paulevé, Inoue, Magnin, Roux in \textit{Computational Methods in Systems Biology}, 2012
+
+[1] Paulevé, Magnin, Roux in MSCS, 2012
+\hfill
+[2] Bernot, Cassez, Comet, Delaplace, Müller, Roux in ENTCS, 2007
+
+[3] Folschette, Paulevé, Inoue, Magnin, Roux in CMSB, 2012
 
 \end{frame}
 \end{document}
